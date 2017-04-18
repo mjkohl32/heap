@@ -6,12 +6,12 @@
 using namespace std;
 using namespace std::chrono;
 
-bool isHeap(int arr[], int parent, int size)
+bool isHeap(int arr[], int parent)
 {
-	if (parent >= size && size <= 2*parent + 1)
-		return true;
+    if (parent != 1 && arr[parent] == 0)
+        return true;
 	return arr[parent] <= arr[2 * parent] && arr[parent] <= arr[2 * parent + 1] &&
-		isHeap(arr, 2 * parent, size) && isHeap(arr, 2 * parent + 1, size);
+		isHeap(arr, 2 * parent) && isHeap(arr, 2 * parent + 1);
 }
 
 
@@ -20,6 +20,7 @@ void heapSort(int arr[], int n)
 	Heap send(n);
 	for (int i = 0; i < n; i++)
 		send.insert(arr[n]);
+    assert(isHeap(send.harry, 1));
 	for (int j = 0; j < n; j++) {
 		arr[j] = send.min();
 		send.remove_min();
@@ -38,7 +39,7 @@ int main()
 	t2 = high_resolution_clock::now();
 	double total = 0;
 	duration<double> time_span = duration_cast<duration<double> >(t2-t1);
-	for (int j = 0; j < 500; j++) // number of trials
+	for (int j = 0; j < 10; j++) // number of trials
 	{
 		n = rand() % 30000; // number of elements
 	//	n = 900;
